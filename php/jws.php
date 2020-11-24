@@ -16,7 +16,7 @@ class ExpException extends \Exception
 
 class JWS
 {
-    private static $supported_algorithms = array(
+    public static $supported_algorithms = array(
         "HS256" => "SHA256",
         "HS384" => "SHA384",
         "HS512" => "SHA512");
