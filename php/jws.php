@@ -133,7 +133,7 @@ class JWS
         if ($encode_as_json) {
             return \rtrim(\urlencode(\base64_encode(\json_encode($data))), "=");
         } else {
-            return \rtrim(\urlencode(\base64_encode($data)));
+            return \rtrim(\urlencode(\base64_encode($data)), "=");
         }
     }
 
