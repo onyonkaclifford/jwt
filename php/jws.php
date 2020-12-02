@@ -22,12 +22,12 @@ class JWS
         "HS512" => "SHA512");
 
     /**
-     * @param array $data_map <p>map of claims, as an associative array</p>
-     * @param string $key <p>secret key</p>
-     * @param integer $nbf <p>not before, given as a Unix timestamp</p>
-     * @param integer $exp_after <p>expire after how many milliseconds since time of issue</p>
-     * @param string $algorithm <p>algorithm to use in signature generation</p>
-     * @return string <p>jwt string</p>
+     * @param array $data_map map of claims, as an associative array
+     * @param string $key secret key
+     * @param integer $nbf not before, given as a Unix timestamp
+     * @param integer $exp_after expire after how many milliseconds since time of issue
+     * @param string $algorithm algorithm to use in signature generation
+     * @return string jwt string
      */
     public static function encode($data_map, $key, $nbf, $exp_after, $algorithm = "HS256")
     {
@@ -45,12 +45,12 @@ class JWS
     }
 
     /**
-     * @param string $token <p>jwt string</p>
-     * @param string $key <p>secret key</p>
-     * @return string <p>map of claims</p>
-     * @throws ExpException <p>jwt is expired</p>
-     * @throws NbfException <p>jwt not yet active</p>
-     * @throws VerificationException <p>jwt signature verification failed</p>
+     * @param string $token jwt string
+     * @param string $key secret key
+     * @return array map of claims
+     * @throws ExpException jwt is expired
+     * @throws NbfException jwt not yet active
+     * @throws VerificationException jwt signature verification failed
      */
     public static function decode($token, $key)
     {
