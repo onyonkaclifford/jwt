@@ -26,10 +26,19 @@ const JWS = (() => {
             "HS384": "SHA-384",
             "HS512": "SHA-512"
         };
+        /**
+         *
+         * @param data_map map of claims, as an associative array
+         * @param key secret key
+         * @param nbf not before, given as a Unix timestamp
+         * @param exp_after expire after how many milliseconds since time of issue
+         * @param algorithm algorithm to use in signature generation
+         * @returns {Promise<string>} jwt string on successful promise resolve
+         */
         this.encode = async (data_map, key, nbf, exp_after, algorithm = "HS256") => {
             check_algorithm_support(algorithm);
-            if (!data_map instanceof Object) {
-                throw TypeError("Data map needs to be a dict");
+            if (Array.isArray(data_map) || Object.keys(data_map).filter(item => typeof(item) == "string").length === 0) {
+                throw TypeError("Data map needs to be an associative array");
             }
 
             let header = encode_header(algorithm);
@@ -38,6 +47,15 @@ const JWS = (() => {
 
             return `${header}.${payload}.${signature}`;
         };
+        /**
+         * w
+         * @param token jwt string
+         * @param key secret key
+         * @returns {Promise<*>} map of claims on successful promise resolve
+         * @throws ExpException jwt is expired
+         * @throws NbfException jwt not yet active
+         * @throws VerificationException jwt signature verification failed
+         */
         this.decode = async (token, key) => {
             let token_segments = token.split(".");
             let encoded_header = token_segments[0];
