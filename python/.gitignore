@@ -1,8 +1,5 @@
-# IDE files
-.idea/
-.idea/*
-
 # Pycache
 __pycache__/
-__pycache__/*
-*.pyc
+
+# Tests
+.coverage
