@@ -1,0 +1,21 @@
+name: python lint
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install isort black flake8
+      - name: Lint with isort, black and flake8
+        run: |
+          isort --profile black python/. -c -v
+          black --check python/.
+          flake8 python/.
