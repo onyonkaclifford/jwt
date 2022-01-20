@@ -1,0 +1,26 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "jest --coverage",
+    "testESModule": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "eslint": "eslint .",
+    "prettierWrite": "prettier --write .",
+    "prettierCheck": "prettier --check .",
+    "checkEslintPrettierConflicts": "eslint-config-prettier src/jwt.js src/algorithms/*.js"
+  },
+  "jest": {
+    "testEnvironment": "jest-environment-node",
+    "transform": {}
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^27.4.7",
+    "prettier": "^2.5.1",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0"
+  }
+}

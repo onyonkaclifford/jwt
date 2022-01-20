@@ -2,6 +2,7 @@ import os
 
 import pytest
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
+
 from src import JWT, keys_utils
 
 
