@@ -1,15 +1,57 @@
 repos:
+  #  Python
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
       - id: isort
-        args: [ "--profile", "black", "--filter-files" ]
+        args:
+          [
+            "--settings-file",
+            "python/pyproject.toml",
+            "--profile",
+            "black",
+            "--filter-files",
+            "python/.",
+          ]
   - repo: https://github.com/psf/black
     rev: 21.12b0
     hooks:
       - id: black
         language_version: python3
+        args: ["--config", "python/pyproject.toml", "python/."]
   - repo: https://github.com/pycqa/flake8
     rev: 4.0.1
     hooks:
       - id: flake8
+        args: ["--config", "python/setup.cfg", "python/."]
+
+  #  JavaScript
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v7.32.0
+    hooks:
+      - id: eslint
+        additional_dependencies:
+          - eslint@7.32.0
+          - eslint-config-standard@16.0.3
+          - eslint-config-prettier@8.3.0
+          - eslint-plugin-import@2.25.4
+          - eslint-plugin-node@11.1.0
+          - eslint-plugin-promise@5.2.0
+        args:
+          [
+            "--config",
+            "javascript/.eslintrc.json",
+            "javascript/src/**",
+            "javascript/tests/*.js",
+          ]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.5.1
+    hooks:
+      - id: prettier
+        args:
+          [
+            ".pre-commit-config.yaml",
+            "javascript/*.json",
+            "javascript/src/.",
+            "javascript/tests/.",
+          ]

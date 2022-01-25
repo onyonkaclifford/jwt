@@ -5,6 +5,9 @@ on: [push]
 jobs:
   lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "python"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -16,6 +19,6 @@ jobs:
           pip install isort black flake8
       - name: Lint with isort, black and flake8
         run: |
-          isort --profile black python/. -c -v
-          black --check python/.
-          flake8 python/.
+          isort --profile black . -c -v
+          black --check .
+          flake8 .
