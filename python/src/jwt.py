@@ -15,7 +15,7 @@ class JWT:
 
     @staticmethod
     def encode(
-        claims: Any,
+        claims: dict,
         secret_key: Union[str, RSAPrivateKey],
         nbf: float,
         exp_after: int,
@@ -24,14 +24,19 @@ class JWT:
     ) -> str:
         """Generate a JWT
 
-        :param claims: data to be stored in the JWT, preferably needs to be passed as a map-like object such as a dict
+        :param claims: data to be stored in the JWT, passed as a dict
         :param secret_key: key to use during signature generation
         :param nbf: 'not before' time claim
         :param exp_after: 'expire after' time claim
-        :param iat: 'issued at' time claim
+        :param iat: 'issued at' time claim, defaults to the current timestamp
         :param algorithm: algorithms to use during signature generation
         :return: a JSON web token
         """
+        if not isinstance(claims, dict):
+            raise TypeError(
+                "The argument passed to the claims parameter needs to be of dict type"
+            )
+
         try:
             algorithm_class = JWT.ALGORITHM_CLASS_RESOLVER[algorithm[:2]]
         except KeyError as e:
@@ -48,7 +53,7 @@ class JWT:
 
         encoded_header = url_safe_codec.encode({"typ": "JWT", "alg": algorithm})
         encoded_payload = url_safe_codec.encode(
-            {"iat": iat, "nbf": nbf, "exp": iat + exp_after, "claims": claims}
+            {"iat": iat, "nbf": nbf, "exp": iat + exp_after, **claims}
         )
         encoded_signature = url_safe_codec.encode(
             algorithm_object.generate_signature(
@@ -99,10 +104,17 @@ class JWT:
 
         current_timestamp = time.time()
         payload = url_safe_codec.decode(encoded_payload)
+        claims_keys = payload.keys()
 
-        if current_timestamp < payload["nbf"]:
+        if "nbf" in claims_keys and current_timestamp < payload["nbf"]:
             raise ValueError(f"Not yet active. Becomes active at {payload['nbf']}")
-        elif current_timestamp > payload["exp"]:
+        elif "exp" in claims_keys and current_timestamp > payload["exp"]:
             raise ValueError(f"Expired at {payload['exp']}")
 
-        return payload["claims"]
+        for i in ["iat", "nbf", "exp"]:
+            try:
+                payload.pop(i)
+            except KeyError:
+                pass
+
+        return payload

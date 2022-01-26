@@ -52,7 +52,7 @@ export const JWT = (() => {
         iat: iat,
         nbf: nbf,
         exp: iat + expAfter,
-        claims: claims,
+        ...claims,
       });
       const signature = algorithmObject.generateSignature(
         encodedHeader,
@@ -115,13 +115,15 @@ export const JWT = (() => {
       const currentTimestamp = Math.floor(Date.now() / 1000);
       const payload = decode(encodedPayload);
 
-      if (currentTimestamp < payload.nbf) {
+      if ("nbf" in payload && currentTimestamp < payload.nbf) {
         throw new Error(`Not yet active. Becomes active at ${payload.nbf}`);
-      } else if (currentTimestamp > payload.exp) {
+      } else if ("exp" in payload && currentTimestamp > payload.exp) {
         throw new Error(`Expired at ${payload.exp}`);
       }
 
-      return payload.claims;
+      ["iat", "nbf", "exp"].forEach((i) => delete payload[i]);
+
+      return payload;
     },
   };
 })();
