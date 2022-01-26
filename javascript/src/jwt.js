@@ -9,6 +9,16 @@ export const JWT = (() => {
   ).concat(Object.keys(new RSAAlgorithm().supportedAlgorithms));
 
   return {
+    /**
+     * Generate a JWT
+     * @param claims data to be stored in the JWT, preferably needs to be passed as a map-like object
+     * @param secretKey key to use during signature generation
+     * @param nbf 'not before' time claim
+     * @param expAfter 'expire after' time claim
+     * @param iat 'issued at' time claim, defaults to current timestamp if undefined
+     * @param algorithm algorithms to use during signature generation
+     * @returns {`${string}.${string}.${string}`}
+     */
     encode: (
       claims,
       secretKey,
@@ -54,6 +64,12 @@ export const JWT = (() => {
 
       return `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
     },
+    /**
+     * Get the claims stored in a JWT
+     * @param token a JSON web token
+     * @param key key to use during signature verification
+     * @returns {*}
+     */
     decode: (token, key) => {
       let encodedHeader;
       let encodedPayload;
