@@ -1,0 +1,5 @@
+path: ./
+cache: build/phplint.cache
+exclude:
+  - vendor
+no-interactive: true

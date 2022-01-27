@@ -46,7 +46,7 @@ For full documentation, view the [pre-commit docs](https://pre-commit.com/).
 
 [![javascript tests](https://github.com/onyonkaclifford/jwt/actions/workflows/javascript_tests.yml/badge.svg?branch=main)](https://github.com/onyonkaclifford/jwt/actions/workflows/javascript_tests.yml)
 [![javascript lint](https://github.com/onyonkaclifford/jwt/actions/workflows/javascript_lint.yml/badge.svg?branch=main)](https://github.com/onyonkaclifford/jwt/actions/workflows/javascript_lint.yml)
-[![eslint-standard-style](<https://img.shields.io/badge/code%20style-eslint_(standard)-d4d4f7.svg>)](https://github.com/eslint/eslint)
+[![eslint-standard-style](https://img.shields.io/badge/code%20style-eslint_standard-d4d4f7.svg)](https://github.com/eslint/eslint)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 Change directory: `cd javascript/`
@@ -87,3 +87,43 @@ ESLint and prettier are used for linting. To automate this task, pre-commit hook
 - (optional) Run against all the files: `pre-commit run --all-files`
 
 For full documentation, view the [pre-commit docs](https://pre-commit.com/).
+
+# PHP
+
+[![php tests](https://github.com/onyonkaclifford/jwt/actions/workflows/php_tests.yml/badge.svg?branch=main)](https://github.com/onyonkaclifford/jwt/actions/workflows/php_tests.yml)
+[![php lint](https://github.com/onyonkaclifford/jwt/actions/workflows/php_lint.yml/badge.svg?branch=main)](https://github.com/onyonkaclifford/jwt/actions/workflows/php_lint.yml)
+[![code style: phplint](https://img.shields.io/badge/code_style-phplint-orange.svg)](https://github.com/overtrue/phplint)
+
+Change directory: `cd php/`
+
+### Example usage
+
+```php
+<?php
+
+require_once("src/jwt.php");
+require_once("src/keys_utils.php");
+
+use JWT\JWT;
+use function JWT\generateRSAKeys;
+
+// Example 1 (HMAC)
+$secretKey = "secret key";
+$jwt = JWT::encode(["sample" => "claim"], $secretKey, 234.23, 300000);
+$claims = JWT::decode($jwt, $secretKey);
+
+// Example 2 (RSA)
+$keys = generateRSAKeys();
+$privateKey = $keys[0];
+$publicKey = $keys[1];
+$jwt = JWT::encode(["sample" => "claim"], $privateKey, 234.23, 300000, null, "RS256");
+$claims = JWT::decode($jwt, $publicKey);
+```
+
+### Tests
+
+- Run tests: `php vendor/phpunit/phpunit/phpunit tests/`
+
+### Linting
+
+- Phplint is used for linting: `php vendor/bin/phplint`
