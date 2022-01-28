@@ -1,0 +1,19 @@
+name: php lint
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "php"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: Install dependencies
+        run: composer update
+      - name: Lint with phplint
+        run: php vendor/bin/phplint

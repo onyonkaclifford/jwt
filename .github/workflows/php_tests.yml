@@ -1,0 +1,22 @@
+name: php tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "php"
+    strategy:
+      matrix:
+        php-version: [8.0, 8.1]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+      - name: Install dependencies
+        run: composer update
+      - name: Test with PHPUnit
+        run: php vendor/phpunit/phpunit/phpunit tests/
