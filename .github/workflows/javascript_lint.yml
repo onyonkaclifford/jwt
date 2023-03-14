@@ -9,15 +9,14 @@ jobs:
       run:
         working-directory: "javascript"
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "18"
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
       - name: Install dependencies
-        run: |
-          npm ci
+        run: npm ci
       - name: Lint with eslint and prettier
         run: |
           npm run eslint

@@ -77,7 +77,7 @@ const claims = JWT.decode(jwt, publicKey);
 
 ### Tests
 
-- Run tests and generate a coverage report: `npm run testESModule`
+- Run tests and generate a coverage report: `npm run test`
 
 ### Linting
 
